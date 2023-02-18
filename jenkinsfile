@@ -10,8 +10,8 @@ pipeline {
         stage("checking version") {
             steps {
                sh '''
-                --sudo docker --version
-                   pwd
+                sudo docker --version
+                   
                   '''
             }
         }
