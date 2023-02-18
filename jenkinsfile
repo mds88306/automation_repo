@@ -1,0 +1,103 @@
+pipeline {
+    agent any
+    stages {
+        stage("GIT CHECKOUT") {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mds88306/automation_repo.git']])
+            }
+        }
+        
+        stage("checking version") {
+            steps {
+               sh '''
+                   sudo docker --version
+                   pwd
+                  '''
+            }
+        }
+        
+        stage("Run prometheus container ") {
+            steps {
+               sh '''
+                   cd prometheus
+                   sudo docker build -t prometheusimg .
+                   sudo docker run -d -p 9090:9090 --name prom_container prometheusimg
+                  '''
+            }
+        }
+        
+        stage("Run node_exporter container ") {
+            steps {
+               sh '''
+                   cd node_exporter
+                   sudo docker build -t node_expo_image .
+                   sudo docker run -d -p 9100:9100 --name node_container nodeimg
+                  '''
+            }
+        }
+
+        stage("Run Grafana container ") {
+            steps {
+               sh '''
+                   cd grafana_server
+                   sudo docker build -t grafana_image .
+                   sudo docker run -itd -p 3000:3000 --name grafana_container grafana_image /bin/bash
+                   sudo docker exec -it 9cea /etc/init.d/grafana-server restart
+                   sudo docker exec -it 9cea /etc/init.d/grafana-server start
+                  '''
+            }
+        }
+        
+        stage("Run alertmanager container ") {
+            steps {
+               sh '''
+                   cd alert_manager
+                   sudo docker build -t alert_image .
+                   sudo docker run -d -p 9093:9093 --name alert_container alert_image
+                   '''
+            }
+        }
+        
+        stage("Checking container status ") {
+            steps {
+               sh '''
+                   sudo docker ps
+                   curl localhost:9090
+                   curl localhost:9100
+                   curl localhost:9093
+                   curl localhost:3000
+                   '''
+             }
+         }
+    
+
+         stage("push image to hub"){
+            steps{
+                script{
+                  withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {  
+                  sh 'dockerlogin -u saleemteli -p ${dockerhubpwd}'
+        }
+                   sh '''
+                    docker push prometheusimg
+                    docker push node_expo_image
+                    docker push alert_image
+                    docker push grafana_image
+                    '''
+
+
+                    }
+                }
+                    }
+    }
+}
+                
+            
+            
+                  
+            
+
+         
+
+         
+
+     
