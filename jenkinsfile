@@ -6,6 +6,18 @@ pipeline {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mds88306/automation_repo.git']])
             }
         }
+
+         stage("login"){
+            steps{
+                script{
+                  withCredentials([string(credentialsId: 'key-login', variable: 'key-login')]) 
+                
+
+                
+                  
+         }
+         }
+         }
         
        
         stage("Run prometheus container ") {
