@@ -35,7 +35,7 @@ pipeline {
             steps {
                sh '''
                    cd node_exporter
-                   sudo docker build -t node_expo_image .
+                   sudo docker build -t nodeimg .
                    sudo docker run -d -p 9100:9100 --name node_container nodeimg
                   '''
             }
