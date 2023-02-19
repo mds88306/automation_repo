@@ -7,16 +7,17 @@ pipeline {
             }
         }
 
-         stage("login"){
-            steps{
-                script{
-                  withCredentials([string(credentialsId: 'key-login', variable: 'key-login')]) 
-                
+           stage("checking version") {
+            steps {
+               sh '''
+                   sudo docker --version
+                   pwd
+                  '''      
 
                 
                   
-         }
-         }
+        }
+     
          }
         
        
@@ -93,7 +94,10 @@ pipeline {
                 }
                     }
     }
+
 }
+
+
                 
             
             
