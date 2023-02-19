@@ -47,6 +47,8 @@ pipeline {
                    cd grafana_server
                    sudo docker build -t grafana_image .
                    sudo docker run -itd -p 3000:3000 --name grafana_container grafana_image /bin/bash
+                   sudo docker exec -it grafana_container /etc/init.d/grafana-server restart
+                   sudo docker exec -it grafana_container /etc/init.d/grafana-server start
                    '''
             }
         }
