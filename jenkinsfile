@@ -75,11 +75,9 @@ pipeline {
 
          stage("push image to hub"){
             steps{
-                script{
-                  withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {  
-                  sh 'dockerlogin -u saleemteli -p ${dockerhubpwd}'
-        }
+                
                    sh '''
+                    docker login -u saleemteli -p Mrkhan@07
                     docker push prometheusimg
                     docker push node_expo_image
                     docker push alert_image
@@ -92,7 +90,7 @@ pipeline {
                     }
     }
 
-}
+
 
 
                 
