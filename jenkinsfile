@@ -85,7 +85,7 @@ pipeline {
                     docker push node_expo_image
                     docker push alert_image
                     docker push grafana_image
-                    '''
+                    '''  
 
 
                     }
