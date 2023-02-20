@@ -25,8 +25,8 @@ pipeline {
             steps {
                sh '''
                    cd prometheus
-                   sudo docker build -t prometheusimg .
-                   sudo docker run -d -p 9090:9090 --name prom_container prometheusimg
+                   sudo docker build -t saleemteli/prometheusimg .
+                   sudo docker run -d -p 9090:9090 --name prom_container saleemteli/prometheusimg
                   '''
             }
         }
@@ -35,8 +35,8 @@ pipeline {
             steps {
                sh '''
                    cd node_exporter
-                   sudo docker build -t nodeimg .
-                   sudo docker run -d -p 9100:9100 --name node_container nodeimg
+                   sudo docker build -t saleemteli/nodeimg .
+                   sudo docker run -d -p 9100:9100 --name node_container saleemteli/nodeimg
                   '''
             }
         }
@@ -45,8 +45,8 @@ pipeline {
             steps {
                sh '''
                    cd grafana_server
-                   sudo docker build -t grafana_image .
-                   sudo docker run -itd -p 3000:3000 --name grafana_container grafana_image /bin/bash
+                   sudo docker build -t saleemteli/grafana_image .
+                   sudo docker run -itd -p 3000:3000 --name grafana_container saleemteli/grafana_image /bin/bash
                    '''
             }
         }
@@ -55,8 +55,8 @@ pipeline {
             steps {
                sh '''
                    cd alert_manager
-                   sudo docker build -t alert_image .
-                   sudo docker run -d -p 9093:9093 --name alert_container alert_image
+                   sudo docker build -t saleemteli/alert_image .
+                   sudo docker run -d -p 9093:9093 --name alert_container saleemteli/alert_image
                    '''
             }
         }
@@ -78,10 +78,10 @@ pipeline {
                 
                    sh '''
                     docker login -u saleemteli -p Mrkhan@07
-                    docker push prometheusimg
-                    docker push node_expo_image
-                    docker push alert_image
-                    docker push grafana_image
+                    docker push saleemteli/prometheusimg
+                    docker push saleemteli/node_expo_image
+                    docker push saleemteli/alert_image
+                    docker push saleemteli/grafana_image
                     '''  
 
 
